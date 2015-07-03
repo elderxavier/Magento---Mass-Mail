@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <massmail_index_index>
+        <reference name="content">
+            <!--<block type="massmail/massmail" name="massmail" />-->
+            <block type="core/template" name="massmail" template="massmail/massmail.phtml" />
+        </reference>
+    </massmail_index_index>
+</layout>

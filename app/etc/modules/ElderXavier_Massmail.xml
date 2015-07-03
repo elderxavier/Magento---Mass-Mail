@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <ElderXavier_Massmail>
+            <active>true</active>
+            <codePool>local</codePool>
+        </ElderXavier_Massmail>
+    </modules>    
+</config>

@@ -1,0 +1,154 @@
+<?xml version="1.0"?>
+
+<!--<config>
+    <modules>
+        <ElderXavier_Massmail>
+            <version>1.0.0</version>
+        </ElderXavier_Massmail>
+    </modules>
+    <global>
+        <helpers>
+            <elderxavier_massmail> -->
+                <!-- Helper definition needed by Magento -->
+                <!--<class>ElderXavier_Massmail_Helper</class>-->
+                 <!--<class>Mage_Core_Helper</class> -->
+
+           <!-- </elderxavier_massmail>
+        </helpers>
+    </global>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <foo_bar before="Mage_Adminhtml">ElderXavier_Massmail_Adminhtml</foo_bar>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+</config>
+-->
+
+
+<config>
+    <modules>
+        <ElderXavier_Massmail>
+            <version>0.1.0</version>
+        </ElderXavier_Massmail>
+    </modules>
+    <frontend>
+        <routers>
+            <massmail>
+                <use>standard</use>
+                <args>
+                    <module>ElderXavier_Massmail</module>
+                    <frontName>massmail</frontName>
+                </args>
+            </massmail>
+        </routers>
+        <layout>
+            <updates>
+                <massmail>
+                    <file>massmail.xml</file>
+                </massmail>
+            </updates>
+        </layout>
+    </frontend>
+    <admin>
+        <routers>
+            <massmail>
+                <use>admin</use>
+                <args>
+                    <module>ElderXavier_Massmail</module>
+                    <frontName>massmail</frontName>
+                </args>
+            </massmail>
+        </routers>
+    </admin>
+    <adminhtml>
+        <menu>
+            <massmail module="massmail">
+                <title>massmail</title>
+                <sort_order>71</sort_order>               
+                <children>
+                    <items module="massmail">
+                        <title>Manage Items</title>
+                        <sort_order>0</sort_order>
+                        <action>massmail/adminhtml_massmail</action>
+                    </items>
+                </children>
+            </massmail>
+        </menu>
+        <acl>
+            <resources>
+                <all>
+                    <title>Allow Everything</title>
+                </all>
+                <admin>
+                    <children>
+                        <massmail>
+                            <title>massmail Module</title>
+                            <sort_order>200</sort_order>
+                        </massmail>
+                    </children>
+                </admin>
+            </resources>   
+        </acl>
+        <layout>
+            <updates>
+                <massmail>
+                    <file>massmail.xml</file>
+                </massmail>
+            </updates>
+        </layout>
+    </adminhtml>   
+    <global>
+        <models>
+            <massmail>
+                <class>ElderXavier_Massmail_Model</class>
+                <resourceModel>massmail_mysql4</resourceModel>
+            </massmail>
+            <massmail_mysql4>
+                <class>ElderXavier_Massmail_Model_Mysql4</class>
+                <entities>
+                    <massmail>
+                        <table>massmail</table>
+                    </massmail>
+                </entities>
+            </massmail_mysql4>
+        </models>
+        <resources>
+            <massmail_setup>
+                <setup>
+                    <module>ElderXavier_Massmail</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </massmail_setup>
+            <massmail_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+ 
+ 
+            </massmail_write>
+            <massmail_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </massmail_read>
+        </resources>
+        <blocks>
+            <massmail>
+                <class>ElderXavier_Massmail_Block</class>
+            </massmail>
+        </blocks>
+        <helpers>
+            <massmail>
+                <class>ElderXavier_Massmail_Helper</class>
+            </massmail>
+        </helpers>
+    </global>
+</config>

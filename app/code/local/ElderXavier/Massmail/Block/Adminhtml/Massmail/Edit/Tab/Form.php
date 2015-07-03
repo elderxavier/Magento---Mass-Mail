@@ -1,0 +1,52 @@
+<?php
+ 
+class ElderXavier_Massmail_Block_Adminhtml_Massmail_Edit_Tab_Form extends Mage_Adminhtml_Block_Widget_Form
+{
+    protected function _prepareForm()
+    {
+        $form = new Varien_Data_Form();
+        $this->setForm($form);
+        $fieldset = $form->addFieldset('massmail_form', array('legend'=>Mage::helper('massmail')->__('Item information')));
+       
+        $fieldset->addField('title', 'text', array(
+            'label'     => Mage::helper('massmail')->__('Title'),
+            'class'     => 'required-entry',
+            'required'  => true,
+            'name'      => 'title',
+        ));
+ 
+        $fieldset->addField('status', 'select', array(
+            'label'     => Mage::helper('massmail')->__('Status'),
+            'name'      => 'status',
+            'values'    => array(
+                array(
+                    'value'     => 1,
+                    'label'     => Mage::helper('massmail')->__('Active'),
+                ),
+ 
+                array(
+                    'value'     => 0,
+                    'label'     => Mage::helper('massmail')->__('Inactive'),
+                ),
+            ),
+        ));
+       
+        $fieldset->addField('content', 'editor', array(
+            'name'      => 'content',
+            'label'     => Mage::helper('massmail')->__('Content'),
+            'title'     => Mage::helper('massmail')->__('Content'),
+            'style'     => 'width:98%; height:400px;',
+            'wysiwyg'   => false,
+            'required'  => true,
+        ));
+       
+        if ( Mage::getSingleton('adminhtml/session')->get<Module>Data() )
+        {
+            $form->setValues(Mage::getSingleton('adminhtml/session')->get<Module>Data());
+            Mage::getSingleton('adminhtml/session')->set<Module>Data(null);
+        } elseif ( Mage::registry('massmail_data') ) {
+            $form->setValues(Mage::registry('<module>_data')->getData());
+        }
+        return parent::_prepareForm();
+    }
+}
