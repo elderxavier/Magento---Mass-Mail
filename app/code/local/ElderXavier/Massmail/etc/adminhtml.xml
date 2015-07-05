@@ -2,14 +2,19 @@
 <config>
     <menu>
         <massmail module="massmail">
-            <title>massmail</title>
+            <title>Mass Mail</title>
             <sort_order>71</sort_order>               
             <children>
-                <items module="massmail">
-                    <title>Manage Items</title>
+                <send module="massmail">
+                    <title>Enviar Emails</title>
                     <sort_order>0</sort_order>
                     <action>massmail/adminhtml_massmail</action>
-                </items>
+                </send>
+                <edit module="massmail">
+                        <title>Edit Template Mails</title>
+                        <sort_order>1</sort_order>
+                        <action>massmail/adminhtml_massmail/edit</action>
+                </edit>
             </children>
         </massmail>
     </menu>
@@ -21,7 +26,7 @@
             <admin>
                 <children>
                     <massmail>
-                        <title>massmail Module</title>
+                        <title>Massmail Module</title>
                         <sort_order>200</sort_order>
                     </massmail>
                 </children>

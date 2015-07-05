@@ -1,60 +1,10 @@
 <?xml version="1.0"?>
-
-<!--<config>
-    <modules>
-        <ElderXavier_Massmail>
-            <version>1.0.0</version>
-        </ElderXavier_Massmail>
-    </modules>
-    <global>
-        <helpers>
-            <elderxavier_massmail> -->
-                <!-- Helper definition needed by Magento -->
-                <!--<class>ElderXavier_Massmail_Helper</class>-->
-                 <!--<class>Mage_Core_Helper</class> -->
-
-           <!-- </elderxavier_massmail>
-        </helpers>
-    </global>
-    <admin>
-        <routers>
-            <adminhtml>
-                <args>
-                    <modules>
-                        <foo_bar before="Mage_Adminhtml">ElderXavier_Massmail_Adminhtml</foo_bar>
-                    </modules>
-                </args>
-            </adminhtml>
-        </routers>
-    </admin>
-</config>
--->
-
-
 <config>
     <modules>
         <ElderXavier_Massmail>
             <version>0.1.0</version>
         </ElderXavier_Massmail>
-    </modules>
-    <frontend>
-        <routers>
-            <massmail>
-                <use>standard</use>
-                <args>
-                    <module>ElderXavier_Massmail</module>
-                    <frontName>massmail</frontName>
-                </args>
-            </massmail>
-        </routers>
-        <layout>
-            <updates>
-                <massmail>
-                    <file>massmail.xml</file>
-                </massmail>
-            </updates>
-        </layout>
-    </frontend>
+    </modules>    
     <admin>
         <routers>
             <massmail>
@@ -69,14 +19,19 @@
     <adminhtml>
         <menu>
             <massmail module="massmail">
-                <title>massmail</title>
+                <title>Mass Mail</title>
                 <sort_order>71</sort_order>               
                 <children>
-                    <items module="massmail">
-                        <title>Manage Items</title>
+                    <send module="massmail">
+                        <title>Send Emails</title>
                         <sort_order>0</sort_order>
                         <action>massmail/adminhtml_massmail</action>
-                    </items>
+                    </send>
+                    <edit module="massmail">
+                        <title>Edit Template Mails</title>
+                        <sort_order>1</sort_order>
+                        <action>massmail/adminhtml_massmail/edit</action>
+                    </edit>
                 </children>
             </massmail>
         </menu>
@@ -88,7 +43,7 @@
                 <admin>
                     <children>
                         <massmail>
-                            <title>massmail Module</title>
+                            <title>Massmail Module</title>
                             <sort_order>200</sort_order>
                         </massmail>
                     </children>

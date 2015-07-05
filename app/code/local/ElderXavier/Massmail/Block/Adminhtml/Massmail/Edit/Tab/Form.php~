@@ -40,7 +40,7 @@ class ElderXavier_Massmail_Block_Adminhtml_Massmail_Edit_Tab_Form extends Mage_A
             'required'  => true,
         ));
        
-        if ( Mage::getSingleton('adminhtml/session')->getMassmailData() )
+        if ( Mage::getSingleton('adminhtml/session')->get<Module>Data() )
         {
             $form->setValues(Mage::getSingleton('adminhtml/session')->getMassmailData());
             Mage::getSingleton('adminhtml/session')->setMassmailData(null);
