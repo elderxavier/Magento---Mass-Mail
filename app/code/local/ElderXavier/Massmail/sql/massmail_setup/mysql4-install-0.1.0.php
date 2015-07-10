@@ -9,9 +9,12 @@ $installer->run("
 -- DROP TABLE IF EXISTS {$this->getTable('massmail')};
 CREATE TABLE {$this->getTable('massmail')} (
   `massmail_id` int(11) unsigned NOT NULL auto_increment,
-  `title` varchar(255) NOT NULL default '',
-  `content` text NOT NULL default '',
-  `status` smallint(6) NOT NULL default '0',
+  `template_id` varchar(255) NOT NULL default '',
+  `template_name` varchar(255) NOT NULL default '',
+  `fromemail` varchar(255) NOT NULL default '',
+  `reply` varchar(255) NOT NULL default '',
+  `subject` varchar(255) NOT NULL default '',  
+  `description` text NOT NULL default '',  
   `created_time` datetime NULL,
   `update_time` datetime NULL,
   PRIMARY KEY (`massmail_id`)

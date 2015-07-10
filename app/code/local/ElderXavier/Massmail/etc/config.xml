@@ -30,7 +30,7 @@
                     <edit module="massmail">
                         <title>Edit Template Mails</title>
                         <sort_order>1</sort_order>
-                        <action>massmail/adminhtml_massmail/edit</action>
+                        <action>massmail/adminhtml_massmail/list</action>
                     </edit>
                 </children>
             </massmail>

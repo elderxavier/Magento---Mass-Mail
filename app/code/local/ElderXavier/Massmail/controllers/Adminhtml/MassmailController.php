@@ -16,10 +16,44 @@ class ElderXavier_Massmail_Adminhtml_MassmailController extends Mage_Adminhtml_C
         $this->getLayout()->getBlock('head')->setTitle($this->__('Mass Mail / Send'));
         $this->renderLayout();
     }
- 
+    
+     public function listAction()
+    {        
+       // $this->_forward('edit');        
+        $this->_initAction();         
+        $this->loadLayout()
+            ->_setActiveMenu('massmail/edit')
+            ->_addBreadcrumb(Mage::helper('adminhtml')->__('Items Manager'), Mage::helper('adminhtml')->__('Mass Mail'));                                                                      
+            $this->_addContent($this->getLayout()->createBlock('massmail/adminhtml_list'));             
+            $this->renderLayout();            
+    }
+
     public function editAction()
     { 
-           // Mage::register('massmail_data', $massmailModel);
+        $massmailId     = $this->getRequest()->getParam('id');
+        $massmailModel  = Mage::getModel('massmail/massmail')->load($massmailId);
+        
+        Mage::register('massmail_data', $massmailModel);
+        $this->_initAction();  
+            $this->loadLayout();
+            if (Mage::getSingleton('cms/wysiwyg_config')->isEnabled()) {
+                $this->getLayout()->getBlock('head')->setCanLoadTinyMce(true);
+            }
+            $this->_setActiveMenu('massmail/items');           
+            $this->_addBreadcrumb(Mage::helper('adminhtml')->__('Item Manager'), Mage::helper('adminhtml')->__('Item Manager'));
+            $this->_addBreadcrumb(Mage::helper('adminhtml')->__('Item News'), Mage::helper('adminhtml')->__('Item News'));           
+            $this->getLayout()->getBlock('head')->setCanLoadExtJs(true);              
+            $this->_addContent($this->getLayout()->createBlock('massmail/adminhtml_list_edit'))
+                 ->_addLeft($this->getLayout()->createBlock('massmail/adminhtml_list_edit_tabs'));
+
+            
+            $this->getLayout()->getBlock('head')->setTitle($this->__('Mass Mail / Edit'));
+            $this->renderLayout();
+       
+    }
+   
+    public function newAction()
+    {        
         $this->_initAction();         
         $this->loadLayout()
             ->_setActiveMenu('massmail/edit')
@@ -29,68 +63,142 @@ class ElderXavier_Massmail_Adminhtml_MassmailController extends Mage_Adminhtml_C
                 $this->getLayout()->getBlock('head')->setCanLoadTinyMce(true);
             }
             
-            $this->getLayout()->getBlock('head')->setTitle($this->__('Mass Mail / Edit'));            
-            $this->_addContent($this->getLayout()->createBlock('massmail/adminhtml_massmail_edit'));            
-            $this->renderLayout();
-       
+            $this->getLayout()->getBlock('head')->setTitle($this->__('Mass Mail / New')); 
+            $this->_addContent($this->getLayout()->createBlock('massmail/adminhtml_massmail_edit'))
+                 ->_addLeft($this->getLayout()->createBlock('massmail/adminhtml_massmail_edit_tabs'));                       
+            $this->renderLayout();       
     }
-   
-    public function newAction()
-    {
-        $this->_forward('edit');
-    }
+            
+    
    
     public function saveAction()
-    {
-        echo "ok save";
-
-        var_dump($_REQUEST);
-        /*
+    {        
         if ( $this->getRequest()->getPost() ) {
+            try {                                                
+                $massmailModel = Mage::getModel('massmail/massmail');
+               
+                $massmailModel
+                    //->setId($this->getRequest()->getParam('id'))
+                    ->setData('template_id',$this->getRequest()->getPost('template_id'))
+                    ->setData('template_name',$this->getRequest()->getPost('template_name'))
+                    ->setData('fromemail',$this->getRequest()->getPost('fromemail'))
+                    ->setData('reply',$this->getRequest()->getPost('reply'))                    
+                    ->setData('subject',$this->getRequest()->getPost('subject'))
+                    ->setData('description',$this->getRequest()->getPost('description'))
+                    ->setData('created_time',date('Y-m-d H:i:s'))
+                    ->save();                                    
+                $this->_redirect('*/*/list');
+                Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('adminhtml')->__('Template was successfully saved'));
+                //Mage::getSingleton('adminhtml/session')->setmassmailData(false);                
+            
+            } catch (Exception $e) {
+                Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+                //Mage::getSingleton('adminhtml/session')->setmassmailData($this->getRequest()->getPost());                
+            }
+        }        
+    }       
+
+    public function editsaveAction()
+    {          
+        
+        if ( $this->getRequest()->getPost() ) {
+            try {                                
+          
+                $massmailModel = Mage::getModel('massmail/massmail');
+               
+                $massmailModel
+                    ->setId($this->getRequest()->getParam('id'))
+                    ->setData('template_id',$this->getRequest()->getPost('template_id'))
+                    ->setData('template_name',$this->getRequest()->getPost('template_name'))
+                    ->setData('fromemail',$this->getRequest()->getPost('fromemail'))
+                    ->setData('reply',$this->getRequest()->getPost('reply'))                    
+                    ->setData('subject',$this->getRequest()->getPost('subject'))
+                    ->setData('description',$this->getRequest()->getPost('description'))
+                    ->setData('created_time',date('Y-m-d H:i:s'))
+                    ->save();                                                 
+                $this->_redirect('*/*/list');
+                Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('adminhtml')->__('Template was successfully saved'));
+                //Mage::getSingleton('adminhtml/session')->setmassmailData(false);                
+            
+            } catch (Exception $e) {
+                Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+                //Mage::getSingleton('adminhtml/session')->setmassmailData($this->getRequest()->getPost());                
+            }
+        } 
+        
+               
+    }
+    public function deleteAction()
+    {
+        if( $this->getRequest()->getParam('id') > 0 ) {
             try {
-                $postData = $this->getRequest()->getPost();
                 $massmailModel = Mage::getModel('massmail/massmail');
                
                 $massmailModel->setId($this->getRequest()->getParam('id'))
-                    ->setTitle($postData['title'])
-                    ->setContent($postData['content'])
-                    ->setStatus($postData['status'])
-                    ->save();
-               
-                Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('adminhtml')->__('Item was successfully saved'));
-                Mage::getSingleton('adminhtml/session')->setmassmailData(false);
-        */        
-          //      $this->_redirect('*/*/');
-        /*    return;
+                    ->delete();                   
+                $this->_redirect('*/*/list');
+                Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('adminhtml')->__('Template was successfully deleted'));                
             } catch (Exception $e) {
+                $this->_redirect('*/*/edit', array('id' => $this->getRequest()->getParam('id')));
                 Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
-                Mage::getSingleton('adminhtml/session')->setmassmailData($this->getRequest()->getPost());
-        */
-               // $this->_redirect('*/*/edit', array('id' => $this->getRequest()->getParam('id')));
-        /*        return;
+                
             }
         }
-        */
-        //$this->_redirect('*/*/');
-    }   
-   
-    /**
-     * Product grid for AJAX request.
-     * Sort and filter result for example.
-     */
-    
-    /*public function gridAction()
-    {
-        $this->loadLayout();
-        $this->getResponse()->setBody(
-               $this->getLayout()->createBlock('massmail/adminhtml_massmail_grid')->toHtml()
-        );
-    }
-    */
-    public function testeAction()
-    {
-        echo "ok save<br>";
+        
+    }       
 
-        var_dump($_REQUEST);
-    }
+    public function sendAction()
+    {        
+        if( $this->getRequest()->getPost('massaction')) {
+            try {
+                $groupidcurtomes = $this->getRequest()->getPost('massaction');
+
+                $customer = Mage::getModel('customer/customer');        
+                $sql = Mage::helper('massmail')->getTemplatesArray();
+                $sql->execute();
+                $data  = $sql->fetchAll();
+                $emailModel = $data[$this->getRequest()->getPost('template')];
+                $logfile = "massmail".str_replace("-","",date("Y-m-d"));
+                foreach ($groupidcurtomes as $key => $id) {
+                    $customer->load($id);                    
+                    $message = $mailmodel = str_replace('{{name}}', $customer->getName(), $emailModel['description']);
+                    if(!Mage::helper('massmail')->sendMails($customer->getEmail(), $emailModel['subject'], $message)){                        
+                        Mage::log("error send email for ".$customer->getEmail(), null, $logfile.".".log);
+                    }
+                }
+                Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('adminhtml')->__('E-mails successfully sent'));
+                $this->_redirect('*/*/index');
+            } catch (Exception $e) {
+                Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+                $this->_redirect('*/*/index');                
+            }
+        }
+        
+    }       
+
+    public function massdeleteAction()
+    {
+        echo "ok massdelete<br>"; 
+
+        if( $this->getRequest()->getPost('massaction') ) {
+            try {
+                $groupidcurtomes = $this->getRequest()->getPost('massaction');                
+                $massmailModel = Mage::getModel('massmail/massmail');
+
+               foreach ($groupidcurtomes as $key => $id) {                                        
+                        $massmailModel->setId($id)
+                        ->delete();                      
+                }  
+                $this->_redirect('*/*/list');               
+                Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('adminhtml')->__('templates successfully deleted'));
+                
+            } catch (Exception $e) {
+                $this->_redirect('*/*/list');
+                Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+                
+            }
+        }
+        
+    }         
+    
 }

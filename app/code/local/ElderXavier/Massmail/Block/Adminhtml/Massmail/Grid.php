@@ -113,26 +113,41 @@ class ElderXavier_Massmail_Block_Adminhtml_Massmail_Grid extends Mage_Adminhtml_
                 'options'   => Mage::getSingleton('adminhtml/system_store')->getWebsiteOptionHash(true),
                 'index'     => 'website_id',
             ));
-        }
-
-        $this->addExportType('*/*/exportCsv', Mage::helper('customer')->__('CSV'));
-        $this->addExportType('*/*/exportXml', Mage::helper('customer')->__('Excel XML'));
+        }        
         return parent::_prepareColumns();
     }
 
     protected function _prepareMassaction()
     {
+        $sql = Mage::helper('massmail')->getTemplatesArray();
+        $sql->execute();
+        $data  = $sql->fetchAll(PDO::FETCH_ASSOC |PDO::FETCH_COLUMN, 1);
+        //$sql->setFetchMode(PDO::FETCH_ASSOC);        
+        //$data->fetchAll(PDO::FETCH_COLUMN, 1);
+
+        array_unshift($groups, array('label'=> '', 'value'=> ''));
         $this->setMassactionIdField('email');        
         $this->getMassactionBlock()->addItem('send_emails', array(
              'label'    => Mage::helper('massmail')->__('Send emails'),
-             'url'      => $this->getUrl('*/*/teste')
+             'url'      => $this->getUrl('*/*/send'),
+             'additional'   => array(
+                'visibility'    => array(
+                     'name'     => 'template',
+                     'type'     => 'select',
+                     'class'    => 'required-entry',
+                     'label'    => 'template',
+                     'values'   => $data
+                 )
+            )         
         ));
 
  
         return $this;
     }
- 
-    
- 
+    protected function _prepareLayout()
+{
+    $this->unsetChild('reset_filter_button');
+    $this->unsetChild('search_button');
+}    
  
 }
