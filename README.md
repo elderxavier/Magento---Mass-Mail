@@ -1,4 +1,4 @@
 # Magento-Mass-Mail
 
-Magneto module for sending mass email (building)
+Magneto module for sending mass email (test version)
 
